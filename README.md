@@ -117,3 +117,30 @@ Por otra parte, el script datos_url.py realiza una tarea equivalente, pero orien
 El tercer script, rds_s3.py, es ejecutado por un job en AWS Glue específicamente configurado para leer la tabla catalogada correspondiente a la base de datos en RDS. Este script emplea un GlueContext, transforma los datos en un DynamicFrame y los exporta como archivos parquet en la zona RAW. La utilización de Glue permite además conservar los metadatos estructurales en el Data Catalog, donde posteriormente pueden ser consumidos por Athena o por otros procesos.
 
 Para ejecutar automáticamente estos scripts, se configuraron tres Jobs en AWS Glue: descargaAPI, descargaURL y rds-s3. Cada uno se asocia directamente a su respectivo script y efectúa su tarea de forma independiente, garantizando que la ingestión de cada fuente se mantenga actualizada en el tiempo. Adicionalmente, se configuraron dos crawlers en AWS Glue para catalogar tanto los datos provenientes de RDS como los datos ya disponibles en S3, lo que facilita la consulta posterior mediante Athena y la integración en procesos ETL.
+
+---
+
+## 6. PROCESOS AUTOMÁTICOS – AWS GLUE
+
+Se implementaron tres ETL Jobs, cada uno ejecutando un script específico:
+
+### 6.1 Job: descargaURL
+
+•	Ejecuta: datos_url.py
+•	Descarga archivo CSV desde Datos.gov.
+
+### 6.2 Job: descargaAPI
+
+•	Ejecuta: datos_api.py
+•	Descarga JSON desde la API pública.
+
+### 6.3 Job: rds-s3
+
+•	Ejecuta: rds_s3.py
+•	Extrae datos desde RDS utilizando el Glue Data Catalog.
+
+<img width="921" height="500" alt="image" src="https://github.com/user-attachments/assets/1fe7eb12-3560-4614-8af8-0037a0bea8d8" />
+
+
+
+
