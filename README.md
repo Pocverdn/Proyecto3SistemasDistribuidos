@@ -27,6 +27,8 @@ Para ello, el proyecto se fundamenta en una infraestructura distribuida basada e
 
 La totalidad del sistema fue diseñada bajo el criterio de ejecución automatizada, lo cual implica que, una vez desplegada la infraestructura requerida, los procesos operan sin intervención humana, logrando reproducir un flujo realista de ingeniería de datos profesional. Se emplearon herramientas como AWS Glue, Amazon EMR, Amazon Athena y Amazon S3, que en conjunto conforman una solución coherente para ingestión, catalogación, procesamiento y consulta de datos. Asimismo, se desarrollaron scripts en Python de forma modular, lo que facilita su administración y su ejecución tanto dentro de los servicios AWS como localmente en entornos de desarrollo.
 
+---
+
 ## 2. OBJETIVOS DEL PROYECTO
 
 
@@ -44,6 +46,8 @@ Diseñar e implementar una arquitectura distribuida que permita ingestión autom
 •	Facilitar consultas analíticas mediante Amazon Athena.
 •	Proveer resultados finales almacenados en S3 para consumo por API Gateway o herramientas analíticas.
 
+---
+
 
 ## 3. CONTEXTO GENERAL Y JUSTIFICACIÓN DEL PROYECTO
 
@@ -57,6 +61,7 @@ La elección de AWS responde a su capacidad de ofrecer servicios administrados q
 
 Asimismo, Amazon Athena permite realizar consultas SQL directamente sobre los datos almacenados sin necesidad de servidores adicionales. En conjunto, estos servicios posibilitan la construcción de un entorno distribuido robusto, modular y reproducible para fines académicos y profesionales.
 
+---
 
 ## 4. ARQUITECTURA GENERAL DEL SISTEMA
 
@@ -99,6 +104,7 @@ Endpoint JSON de datos abiertos.
 •	Amazon API Gateway (opcional)
 •	Amazon IAM para roles y permisos
 
+---
 
 ## 5. PROCESOS DE INGESTA AUTOMÁTICA DE DATOS
 
