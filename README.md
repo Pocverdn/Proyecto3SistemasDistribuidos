@@ -13,7 +13,7 @@
 
 **GitHub:** [Pocverdn](https://github.com/Pocverdn)
 
----
+
 
 ## IMPLEMENTACIÓN DE UNA ARQUITECTURA DE INGESTA, PROCESAMIENTO Y ANÁLISIS DE DATOS
 
