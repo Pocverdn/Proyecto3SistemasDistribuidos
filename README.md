@@ -377,9 +377,9 @@ Finalmente, la construcción conjunta de esta arquitectura permitió al equipo a
 
 ## REFERENCIAS
 
-(https://youtu.be/ZFns7fvBCH4?si=hu5Y34JDB9yY7bsd)
+https://youtu.be/ZFns7fvBCH4?si=hu5Y34JDB9yY7bsd
 
-(https://github.com/airscholar/EMR-for-data-engineers/tree/main)
+https://github.com/airscholar/EMR-for-data-engineers/tree/main
 
 
 
