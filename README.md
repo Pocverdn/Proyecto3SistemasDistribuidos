@@ -361,6 +361,53 @@ Realiza la parte analítica:
 ---
 
 
+## 13. GUÍA PASO A PASO (EJECUCIÓN)
+
+El proyecto se divide en 3 fases:
+
+•	Ingesta de datos
+
+•	Procesamiento
+
+•	Consumo
+
+
+A continuación, presentaremos una guía general de cómo llevar a cabo cada una de las fases
+
+**1.	Fase de ingesta**
+
+| Paso | Componente                | Acción Clave                                                                                                                                               |
+|------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1    | Infraestructura RDS       | Crear la tabla **dim_municipios** en PostgreSQL y llenarla con los 8 registros esenciales.                                                               |
+| 2    | Conexión de Red           | Asegurar que el **rds-ec2-1** tenga una regla de entrada auto-referenciada para **Todo el Tráfico TCP (0-65535)** para permitir comunicación Glue/EMR.   |
+| 3    | Ingesta URL               | Crear y ejecutar el Job **Python Shell (descargaURL)** para descargar el archivo `casos_covid.gz` y guardarlo en `s3://.../raw/url/`.                     |
+| 4    | Ingesta RDS               | Crear y ejecutar el Job **Spark (rds-s3)** usando la conexión **Postgresql connection** para leer `dim_municipios` y guardarlo en Parquet en `s3://.../raw/rds/`. |
+
+
+
+**2. Fase de procesamiento**
+
+| Paso | Componente               | Objetivo                                                                                                                                                           |
+|------|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1    | Configuración EMR         | Lanzar un clúster estable (ej. **M7g**) con **Terminación Automática**.                                                                                            |
+| 2    | EMR Step 1 (JOIN)         | Ejecutar `etl_join.py`: JOIN de COVID (`raw/url/casos_covid.gz`) con Municipios (`raw/rds/`) usando **PySpark**. Maneja renombrado dinámico de la columna **DIVIPOLA**. |
+| 3    | Salida Trusted            | Resultado: Data enriquecida guardada en `s3://.../trusted/covid_enriquecido/`.                                                                                     |
+| 4    | EMR Step 2 (Analítica)    | Ejecutar `etl_analitica_refined.py`: leer Trusted, calcular **Tasa de Letalidad** y **Casos por 100K** usando DataFrames Pipelines y **SparkSQL**.                |
+| 5    | Salida Refined            | Resultado: Ranking analítico guardado en `s3://.../refined/analisis/`.                                                                                             |
+
+
+
+**3. Fase de consumo**
+
+| Paso | Componente               | Acción Clave                                                                                                                             |
+|------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| 1    | Catalogación              | Crear y ejecutar el **CrawlerRefined_Analisis** apuntando a `s3://.../refined/analisis/`.                                                |
+| 2    | Consulta SQL              | Verificar que la tabla (ej. **datos-finales-analisis**) esté disponible en la base de datos **db-covid** y ejecutar la consulta de ranking. |
+| 3    | Acceso Web                | Crear la función **Lambda** (Python/boto3) para consultar la tabla de Athena y devolver JSON. Exponer la función vía **API Gateway**.     |
+
+---
+
+
 ## 14. CONCLUSIONES
 
 El desarrollo de este proyecto permitió comprender con profundidad la complejidad y relevancia de implementar una arquitectura distribuida para la gestión de datos en un contexto real. La utilización integrada de varios servicios de AWS puso de manifiesto la importancia de elegir adecuadamente las tecnologías que permitan automatizar procesos, manejar volúmenes significativos de información y garantizar la disponibilidad continua de los datos en todas las etapas del flujo. La experiencia adquirida en la ingesta automática desde fuentes heterogéneas confirmó que la combinación de datos abiertos y bases de datos relacionales enriquece significativamente las capacidades analíticas y permite ofrecer una visión más precisa sobre los fenómenos estudiados.
