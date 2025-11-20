@@ -5,7 +5,7 @@ import io
 CSV_URL = "https://www.datos.gov.co/api/views/gt2j-8ykr/rows.csv?accessType=DOWNLOAD"
 BUCKET_NAME = "proyecto3datalake"
 
-S3_KEY = "raw/covid/url/casos_covid.gz" 
+S3_KEY = "raw/covid/url/casos_covid.csv.gz" 
 
 s3_client = boto3.client('s3')
 
